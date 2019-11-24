@@ -2,8 +2,20 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const app = express();
+const port = 3000;
+
+console.clear();
+
 app.use(bodyParser.json());
 
-app.listen(3000, () => {
-    console.log("Listening on port 3000");
+app.get(['', '/'], (req, res) => {
+    res.redirect("/index.html")
+});
+
+app.get('*', (req, res) => {
+    res.sendFile(__dirname + "/frontend" + req.path);
+});
+
+app.listen(port, () => {
+    console.log(`Listening on port ${port}`);
 });
