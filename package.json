@@ -1,0 +1,19 @@
+{
+  "name": "projekt_bd",
+  "version": "1.0.0",
+  "description": "Projekt na zaliczenie przedmiotu Bazy Danych",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lostrowka/projekt_bd.git"
+  },
+  "author": "Natalia Mielimonka, Lukasz Ostrowka",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lostrowka/projekt_bd/issues"
+  },
+  "homepage": "https://github.com/lostrowka/projekt_bd#readme"
+}
