@@ -1,0 +1,36 @@
+<form (ngSubmit)="onSubmit(f)" #f="ngForm">
+    <div class="row">
+        <label class="col-sm-2 col-form-label">Tytuł</label>
+        <div class="col-sm-10">
+            <input type="text" name="title" required ngModel>
+        </div>
+    </div>
+    <div class="row">
+        <label class="col-sm-2 col-form-label">Autor</label>
+        <div class="col-sm-10">
+            <select name="author" ngModel>
+                <option *ngFor="let author of authors" [value]="author.id">{{ author.GetFullName() }}</option>
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <label class="col-sm-2 col-form-label">Kategoria</label>
+        <div class="col-sm-10">
+            <select name="category" ngModel>
+                <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <label class="col-sm-2 col-form-label">ISBN</label>
+        <div class="col-sm-10">
+            <input type="text" name="isbn" required ngModel>
+        </div>
+    </div>
+    <div class="text-right">
+        <div class="col-md-12 text-center">
+            <button class="btn btn-fill btn-secondary mx-2" type="button" (click)="location.back()">Wyjdź</button>
+            <button class="btn btn-fill btn-primary mx-2" type="submit">Zatwierdź</button>
+        </div>
+    </div>
+</form>

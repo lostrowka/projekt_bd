@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CatalogService } from "../services/catalog.service";
-import { Book } from "../models/book";
+import { CatalogEntry } from "../models/catalog_entry";
 
 @Component({
     selector: 'app-catalog',
@@ -9,16 +9,20 @@ import { Book } from "../models/book";
 })
 export class CatalogComponent implements OnInit {
 
-    books: Book[];
+    books: CatalogEntry[];
 
     constructor(private catalogService: CatalogService) {
     }
 
     ngOnInit() {
-        this.catalogService.GetAllBooks().then((res) => {
+        this.catalogService.GetCatalogData().then((res) => {
             console.log("Success");
             this.books = res;
         })
+    }
+
+    deleteEntry(id: number) {
+        console.log(id)
     }
 
 }

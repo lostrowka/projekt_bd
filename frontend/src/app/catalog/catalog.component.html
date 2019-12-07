@@ -1,1 +1,26 @@
-<p>{{ books[0].title }}</p>
+<table class="catalog">
+    <tr>
+        <th class="table-item">ID</th>
+        <th class="table-item">Tytuł</th>
+        <th class="table-item">Autor</th>
+        <th class="table-item">Kategoria</th>
+        <th class="table-item">ISBN</th>
+        <th class="table-item"></th>
+    </tr>
+    <tr *ngFor="let book of books">
+        <td class="table-item">{{ book.id }}</td>
+        <td class="table-item">{{ book.title }}</td>
+        <td class="table-item">{{ book.author }}</td>
+        <td class="table-item">{{ book.category }}</td>
+        <td class="table-item">{{ book.isbn }}</td>
+        <td class="table-item">
+            <a class="row-btn" [routerLink]="['/edit/book/' + book.id]">
+                <i class="material-icons">edit</i>
+            </a>
+            <a class="row-btn" (click)="deleteEntry(book.id)">
+                <i class="material-icons red600">delete</i>
+            </a>
+        </td>
+    </tr>
+</table>
+

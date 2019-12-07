@@ -6,7 +6,7 @@ const app = express();
 const port = 3000;
 const pgClient = new pg.Client({
     database: 'library',
-    host: '192.168.0.34',
+    host: 'localhost',
     port: 5432,
     user: 'postgres',
     password: 'postgres',
@@ -35,6 +35,51 @@ app.get(['/getAllBooks'], (req, res) => {
     })
 });
 
+app.get(['/getBookById'], (req, res) => {
+    let id = parseInt(req.param("id"));
+
+    query = {
+        text: 'SELECT * FROM books WHERE id = $1 ORDER BY id ASC',
+        values: [id]
+    };
+
+    pgClient.query(query, (error, results) => {
+        if (error) {
+            throw error
+        }
+        res.status(200).json(results.rows[0])
+    })
+});
+
+app.get(['/getAllAuthors'], (req, res) => {
+    pgClient.query('SELECT * FROM authors ORDER BY id ASC', (error, results) => {
+        if (error) {
+            throw error
+        }
+        res.status(200).json(results.rows)
+    })
+});
+
+app.get(['/getAllCategories'], (req, res) => {
+    pgClient.query('SELECT * FROM categories ORDER BY id ASC', (error, results) => {
+        if (error) {
+            throw error
+        }
+        res.status(200).json(results.rows)
+    })
+});
+
+app.get(['/getCatalogData'], (req, res) => {
+    pgClient.query('SELECT B.id, B.title, CONCAT(A.first_name, \' \', A.last_name) AS author, C.name AS category, ' +
+                   'B.isbn FROM books B, authors A, categories C WHERE B.author=A.id AND B.category=C.id ' +
+                   'ORDER BY id ASC;', (error, results) => {
+        if (error) {
+            throw error
+        }
+        res.status(200).json(results.rows)
+    })
+});
+
 app.get(['/edit'], (req, res) => {
     res.sendFile(__dirname + "/frontend" + "/forms/edit_book.html")
 });
@@ -51,10 +96,6 @@ app.listen(port, () => {
         } else {
             console.log('Postgres client connected to database')
         }
-    });
-    pgClient.query("SELECT * FROM users;", (err, res) => {
-        if (err) throw err;
-        console.log(res.rows);
     });
     console.log(`Listening on port ${port}`);
 });

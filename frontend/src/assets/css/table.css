@@ -1,0 +1,11 @@
+table.catalog {
+    width: 100%;
+}
+
+.table-item {
+    padding: 0.5rem;
+}
+
+.row-btn {
+    padding: 0px 5px;
+}
