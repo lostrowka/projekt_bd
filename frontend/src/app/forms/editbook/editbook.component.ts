@@ -16,22 +16,27 @@ import { Category } from "../../models/category";
 })
 export class EditBookComponent implements OnInit {
     @ViewChild('f', {static: false}) editForm: NgForm;
+    book_id: number;
     book: Book;
     authors: Author[];
     categories: Category[];
 
     constructor(private bookService: BookService, private authorService: AuthorService, private categoryService: CategoryService, private route: ActivatedRoute, private location: Location) {
         this.route.params.subscribe(params => {
-            let book_id = Number(this.route.snapshot.paramMap.get('book_id'));
+            console.log(this.route.snapshot.data['mode']);
 
-            this.bookService.GetBookById(book_id).then((res) => {
-                this.editForm.setValue({
-                    title: res.title,
-                    author: res.author,
-                    category: res.category,
-                    isbn: res.isbn
+            this.book_id = Number(this.route.snapshot.paramMap.get('book_id'));
+
+            if (this.book_id) {
+                this.bookService.GetBookById(this.book_id).then((res) => {
+                    this.editForm.setValue({
+                        title: res.title,
+                        author: res.author,
+                        category: res.category,
+                        isbn: res.isbn
+                    });
                 });
-            });
+            }
 
             this.authorService.GetAllAuthors().then((res) => {
                 this.authors = res;
@@ -48,7 +53,12 @@ export class EditBookComponent implements OnInit {
     }
 
     onSubmit(form: NgForm) {
-        console.log("Submit")
+        console.log("Submit");
+        if (this.book_id) {
+            console.log("Edit");
+        } else {
+            console.log("Add");
+        }
     }
 
 }

@@ -60,12 +60,44 @@ app.get(['/getAllAuthors'], (req, res) => {
     })
 });
 
+app.get(['/getAuthorById'], (req, res) => {
+    let id = parseInt(req.param("id"));
+
+    query = {
+        text: 'SELECT * FROM authors WHERE id = $1 ORDER BY id ASC',
+        values: [id]
+    };
+
+    pgClient.query(query, (error, results) => {
+        if (error) {
+            throw error
+        }
+        res.status(200).json(results.rows[0])
+    })
+});
+
 app.get(['/getAllCategories'], (req, res) => {
     pgClient.query('SELECT * FROM categories ORDER BY id ASC', (error, results) => {
         if (error) {
             throw error
         }
         res.status(200).json(results.rows)
+    })
+});
+
+app.get(['/getCategoryById'], (req, res) => {
+    let id = parseInt(req.param("id"));
+
+    query = {
+        text: 'SELECT * FROM categories WHERE id = $1 ORDER BY id ASC',
+        values: [id]
+    };
+
+    pgClient.query(query, (error, results) => {
+        if (error) {
+            throw error
+        }
+        res.status(200).json(results.rows[0])
     })
 });
 

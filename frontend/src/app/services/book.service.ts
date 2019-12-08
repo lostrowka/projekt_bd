@@ -5,28 +5,50 @@ import { catchError, map } from "rxjs/operators";
 import { HttpClient, HttpParams } from "@angular/common/http";
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class BookService {
 
-  constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient) {
+    }
 
-  GetBookById(id: number): Promise<Book> {
-    let params = new HttpParams().set('id', id.toString());
+    GetBookById(id: number): Promise<Book> {
+        let params = new HttpParams().set('id', id.toString());
 
-    return this.http.get<Book>(URL + '/getBookById', { params: params })
-        .pipe(
-            map(res => {
-                return this.BookJSONtoObject(res);
-            }),
-            catchError(errorHandl)
-        ).toPromise();
-  }
+        return this.http.get<Book>(URL + '/getBookById', {params: params})
+            .pipe(
+                map(res => {
+                    return this.BookJSONtoObject(res);
+                }),
+                catchError(errorHandl)
+            ).toPromise();
+    }
 
-  BookJSONtoObject(res) {
-    let book = new Book();
-    Object.assign(book, res);
+    UpdateBook(book: Book): Promise<number> {
+        return this.http.post<Book>(URL + '/updateBook', book, {observe: 'response'})
+            .pipe(
+                map(res => {
+                    return res.status;
+                }),
+                catchError(errorHandl)
+            ).toPromise();
+    }
 
-    return book;
-  }
+    AddBook(book: Book): Promise<number> {
+        return this.http.post<Book>(URL + '/addBook', book, {observe: 'response'})
+            .pipe(
+                map(res => {
+                    return res.status;
+                }),
+                catchError(errorHandl)
+            ).toPromise();
+    }
+
+
+    BookJSONtoObject(res) {
+        let book = new Book();
+        Object.assign(book, res);
+
+        return book;
+    }
 }
