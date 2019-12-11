@@ -28,6 +28,8 @@ export class EditAuthorComponent implements OnInit {
             this.authorService.GetAllAuthors().then((res) => {
                 this.authors = res;
             });
+        } else {
+            this.author = new Author();
         }
     }
 
@@ -36,11 +38,27 @@ export class EditAuthorComponent implements OnInit {
     }
 
     onSubmit(form: NgForm) {
-        console.log("Submit");
+        this.author.first_name = form.value['first_name'];
+        this.author.last_name = form.value['last_name'];
+        this.author.origin = form.value['origin'];
         if (this.author_id) {
-            console.log("Edit");
+            this.authorService.UpdateAuthor(this.author).then(res => {
+                if (res.status >= 400) {
+                    alert("Błąd " + res.status + ". Error: " + res.statusText);
+                } else {
+                    this.editForm.reset();
+                    this.author_id = undefined;
+                }
+            })
         } else {
-            console.log("Add");
+            this.authorService.AddAuthor(this.author).then(res => {
+                if (res.status >= 400) {
+                    alert("Błąd " + res.status + ". Error: " + res.statusText);
+                } else {
+                    this.editForm.reset();
+                    this.author_id = undefined;
+                }
+            })
         }
     }
 
@@ -51,6 +69,7 @@ export class EditAuthorComponent implements OnInit {
     onChange() {
         this.author_id = this.editForm.value["author"];
         this.authorService.GetAuthorById(this.author_id).then((res) => {
+            this.author = res;
             this.editForm.setValue({
                 author: this.author_id,
                 first_name: res.first_name,

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { errorHandl, URL } from "./common";
 import { catchError, map } from "rxjs/operators";
 import { Category } from "../models/category";
-import { HttpClient, HttpParams } from "@angular/common/http";
+import { HttpClient, HttpParams, HttpResponse } from "@angular/common/http";
 
 @Injectable({
     providedIn: 'root'
@@ -29,6 +29,26 @@ export class CategoryService {
             .pipe(
                 map(res => {
                     return this.CategoryJSONtoObject(res);
+                }),
+                catchError(errorHandl)
+            ).toPromise();
+    }
+
+    AddCategory(category: Category): Promise<HttpResponse<any>> {
+        return this.http.post<HttpResponse<any>>(URL + '/addCategory', category, {observe: 'response'})
+            .pipe(
+                map(res => {
+                    return res;
+                }),
+                catchError(errorHandl)
+            ).toPromise();
+    }
+
+    UpdateCategory(category: Category): Promise<HttpResponse<any>> {
+        return this.http.post<HttpResponse<any>>(URL + '/updateCategory', category, {observe: 'response'})
+            .pipe(
+                map(res => {
+                    return res;
                 }),
                 catchError(errorHandl)
             ).toPromise();

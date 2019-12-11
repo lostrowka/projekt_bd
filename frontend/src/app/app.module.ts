@@ -27,10 +27,10 @@ const routes: Routes = [
         children: [{
             path: 'book/:book_id',
             component: EditBookComponent
-        },{
+        }, {
             path: 'author',
             component: EditAuthorComponent,
-            data: { mode: 'edit' }
+            data: {mode: 'edit'}
         }, {
             path: 'category',
             component: EditCategoryComponent,
@@ -42,14 +42,14 @@ const routes: Routes = [
         children: [{
             path: 'book',
             component: EditBookComponent
-        },{
+        }, {
             path: 'author',
             component: EditAuthorComponent,
-            data: { mode: 'add' }
-        },{
+            data: {mode: 'add'}
+        }, {
             path: 'category',
             component: EditCategoryComponent,
-            data: { mode: 'add' }
+            data: {mode: 'add'}
         }]
     }
 ];

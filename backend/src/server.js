@@ -6,7 +6,7 @@ const app = express();
 const port = 3000;
 const pgClient = new pg.Client({
     database: 'library',
-    host: 'localhost',
+    host: '192.168.244.128',
     port: 5432,
     user: 'postgres',
     password: 'postgres',
@@ -76,6 +76,34 @@ app.get(['/getAuthorById'], (req, res) => {
     })
 });
 
+app.post(['/addAuthor'], (req, res) => {
+    query = {
+        text: 'INSERT INTO authors (first_name, last_name, origin) VALUES ($1, $2, $3)',
+        values: [req.body["first_name"], req.body["last_name"], req.body["origin"]]
+    };
+
+    pgClient.query(query, (error, results) => {
+        if (error) {
+            res.status(503).text(error.detail)
+        }
+        res.status(200).json(results.rows[0])
+    })
+});
+
+app.post(['/updateAuthor'], (req, res) => {
+    query = {
+        text: 'UPDATE authors SET first_name=$2, last_name=$3, origin=$4 WHERE id=$1',
+        values: [parseInt(req.body["id"]), req.body["first_name"], req.body["last_name"], req.body["origin"]]
+    };
+
+    pgClient.query(query, (error, results) => {
+        if (error) {
+            throw error
+        }
+        res.status(200).json(results.rows[0])
+    })
+});
+
 app.get(['/getAllCategories'], (req, res) => {
     pgClient.query('SELECT * FROM categories ORDER BY id ASC', (error, results) => {
         if (error) {
@@ -91,6 +119,36 @@ app.get(['/getCategoryById'], (req, res) => {
     query = {
         text: 'SELECT * FROM categories WHERE id = $1 ORDER BY id ASC',
         values: [id]
+    };
+
+    pgClient.query(query, (error, results) => {
+        if (error) {
+            res.status(500).json(error.detail)
+        } else {
+            res.status(200).json(results.rows[0])
+        }
+    })
+});
+
+app.post(['/addCategory'], (req, res) => {
+    query = {
+        text: 'INSERT INTO categories (name) VALUES ($1)',
+        values: [req.body["name"]]
+    };
+
+    pgClient.query(query, (error, results) => {
+        if (error) {
+            res.status(503).json(error.detail)
+        } else {
+            res.status(200).json(results.rows[0])
+        }
+    })
+});
+
+app.post(['/updateCategory'], (req, res) => {
+    query = {
+        text: 'UPDATE categories SET name=$2 WHERE id=$1',
+        values: [parseInt(req.body["id"]), req.body["name"]]
     };
 
     pgClient.query(query, (error, results) => {
@@ -121,7 +179,6 @@ app.get('*', (req, res) => {
 });
 
 app.listen(port, () => {
-    let connectionString = "postgres://postgres:postgres@192.168.0.34:5432/library";
     pgClient.connect(err => {
         if (err) {
             console.error('Failed on connect to database', err.stack)

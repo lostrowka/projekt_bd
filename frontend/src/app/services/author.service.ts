@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from "@angular/common/http";
+import { HttpClient, HttpParams, HttpResponse } from "@angular/common/http";
 import { errorHandl, URL } from "./common";
 import { catchError, map } from "rxjs/operators";
 import { Author } from "../models/author";
-import { Book } from "../models/book";
 
 @Injectable({
     providedIn: 'root'
@@ -30,6 +29,26 @@ export class AuthorService {
             .pipe(
                 map(res => {
                     return this.AuthorJSONtoObject(res);
+                }),
+                catchError(errorHandl)
+            ).toPromise();
+    }
+
+    AddAuthor(author: Author): Promise<HttpResponse<any>> {
+        return this.http.post<HttpResponse<any>>(URL + '/addAuthor', author, {observe: 'response'})
+            .pipe(
+                map(res => {
+                    return res;
+                }),
+                catchError(errorHandl)
+            ).toPromise();
+    }
+
+    UpdateAuthor(author: Author): Promise<HttpResponse<any>> {
+        return this.http.post<HttpResponse<any>>(URL + '/updateAuthor', author, {observe: 'response'})
+            .pipe(
+                map(res => {
+                    return res;
                 }),
                 catchError(errorHandl)
             ).toPromise();
