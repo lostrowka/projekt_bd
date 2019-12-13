@@ -1,0 +1,26 @@
+<table class="catalog">
+    <tr>
+        <th class="table-item">ID</th>
+        <th class="table-item">Książka</th>
+        <th class="table-item">Przez</th>
+        <th class="table-item">Data wypożyczenia</th>
+        <th class="table-item">Data zwrotu</th>
+        <th class="table-item"></th>
+    </tr>
+    <tr *ngFor="let rental of rentals">
+        <td class="table-item">{{ rental.id }}</td>
+        <td class="table-item">{{ rental.book_title }}</td>
+        <td class="table-item">{{ rental.user_name }}</td>
+        <td class="table-item">{{ rental.date_on }}</td>
+        <td class="table-item">{{ rental.date_to }}</td>
+        <td class="table-item">
+            <a class="row-btn" [routerLink]="['/edit/rental/' + rental.id]">
+                <i class="material-icons">edit</i>
+            </a>
+            <a class="row-btn" (click)="deleteEntry(rental.id)">
+                <i class="material-icons red600">delete</i>
+            </a>
+        </td>
+    </tr>
+</table>
+

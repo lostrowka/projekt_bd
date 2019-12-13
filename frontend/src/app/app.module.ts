@@ -10,6 +10,7 @@ import { EditBookComponent } from './forms/editbook/editbook.component';
 import { FormModule } from "./forms/form.module";
 import { EditAuthorComponent } from "./forms/editauthor/editauthor.component";
 import { EditCategoryComponent } from "./forms/editcategory/editcategory.component";
+import { RentalsComponent } from './rentals/rentals.component';
 
 
 const routes: Routes = [
@@ -21,6 +22,10 @@ const routes: Routes = [
     {
         path: 'catalog',
         component: CatalogComponent
+    },
+    {
+        path: 'rentals',
+        component: RentalsComponent
     },
     {
         path: 'edit',
@@ -57,7 +62,8 @@ const routes: Routes = [
 @NgModule({
     declarations: [
         AppComponent,
-        CatalogComponent
+        CatalogComponent,
+        RentalsComponent
     ],
     imports: [
         BrowserModule,
