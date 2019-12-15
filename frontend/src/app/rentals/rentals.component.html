@@ -11,8 +11,8 @@
         <td class="table-item">{{ rental.id }}</td>
         <td class="table-item">{{ rental.book_title }}</td>
         <td class="table-item">{{ rental.user_name }}</td>
-        <td class="table-item">{{ rental.date_on }}</td>
-        <td class="table-item">{{ rental.date_to }}</td>
+        <td class="table-item">{{ rental.date_on | date: "dd.MM.yyyy" }}</td>
+        <td class="table-item">{{ rental.date_to | date: "dd.MM.yyyy" }}</td>
         <td class="table-item">
             <a class="row-btn" [routerLink]="['/edit/rental/' + rental.id]">
                 <i class="material-icons">edit</i>

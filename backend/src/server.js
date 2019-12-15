@@ -6,52 +6,34 @@ const app = express();
 const port = 3000;
 const pgClient = new pg.Client({
     database: 'library',
-    host: '192.168.244.128',
+    host: 'localhost',
     port: 5432,
     user: 'postgres',
     password: 'postgres',
 });
 
-require('./routes/authors')(app, pgClient);
-require('./routes/categories')(app, pgClient);
-
-console.clear();
 
 app.use(bodyParser.json());
 
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 });
 
+process.env.TZ = 'Europe/Warsaw';
+
+require('./routes/authors')(app, pgClient);
+require('./routes/books')(app, pgClient);
+require('./routes/categories')(app, pgClient);
+require('./routes/rentals')(app, pgClient);
+require('./routes/users')(app, pgClient);
+
+console.clear();
+
 app.get(['', '/'], (req, res) => {
     res.redirect("/index.html")
-});
-
-app.get(['/getAllBooks'], (req, res) => {
-    pgClient.query('SELECT * FROM books ORDER BY id ASC', (error, results) => {
-        if (error) {
-            throw error
-        }
-        res.status(200).json(results.rows)
-    })
-});
-
-app.get(['/getBookById'], (req, res) => {
-    let id = parseInt(req.param("id"));
-
-    query = {
-        text: 'SELECT * FROM books WHERE id = $1 ORDER BY id ASC',
-        values: [id]
-    };
-
-    pgClient.query(query, (error, results) => {
-        if (error) {
-            throw error
-        }
-        res.status(200).json(results.rows[0])
-    })
 });
 
 app.get(['/edit'], (req, res) => {
@@ -68,6 +50,11 @@ app.listen(port, () => {
             console.error('Failed on connect to database', err.stack)
         } else {
             console.log('Postgres client connected to database')
+        }
+    });
+    pgClient.query('SET datestyle TO dmy', (error, results) => {
+        if (error) {
+            console.log(error);
         }
     });
     console.log(`Listening on port ${port}`);

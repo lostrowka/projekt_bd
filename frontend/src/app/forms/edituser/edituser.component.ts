@@ -2,80 +2,82 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from "@angular/forms";
 import { ActivatedRoute } from "@angular/router";
 import { Location } from "@angular/common";
-import { CategoryService } from "../../services/category.service";
-import { Category } from "../../models/category";
+import { UserService } from "../../services/user.service";
+import { User } from "../../models/user";
 
 @Component({
-    selector: 'app-editcategory',
-    templateUrl: './editcategory.component.html',
+    selector: 'app-edituser',
+    templateUrl: './edituser.component.html',
     styles: []
 })
-export class EditCategoryComponent {
-
+export class EditUserComponent {
     @ViewChild('f', {static: false}) editForm: NgForm;
     mode: string;
-    category_id: number;
-    category: Category;
-    categories: Category[];
+    user_id: number;
+    user: User;
+    users: User[];
 
-    constructor(private categoryService: CategoryService, private route: ActivatedRoute, private location: Location) {
+    constructor(private userService: UserService, private route: ActivatedRoute, private location: Location) {
 
         console.log(this.route.snapshot.data['mode']);
 
         this.mode = this.route.snapshot.data['mode'];
 
         if (!this.mode.toString().localeCompare("edit")) {
-            this.categoryService.GetAllCategories().then((res) => {
-                this.categories = res;
+            this.userService.GetAllUsers().then((res) => {
+                this.users = res;
             });
         } else {
-            this.category = new Category();
+            this.user = new User();
         }
     }
 
     onSubmit(form: NgForm) {
-        this.category.name = form.value['name'];
-        if (this.category_id) {
-            this.categoryService.UpdateCategory(this.category).then(res => {
+        this.user.first_name = form.value['first_name'];
+        this.user.last_name = form.value['last_name'];
+        this.user.email = form.value['email'];
+        if (this.user_id) {
+            this.userService.UpdateUser(this.user).then(res => {
                 if (res.status >= 400) {
                     alert("Błąd " + res.status + ". Error: " + res.statusText);
                 } else {
                     this.editForm.reset();
-                    this.category_id = undefined;
+                    this.user_id = undefined;
                 }
             })
         } else {
-            this.categoryService.AddCategory(this.category).then(res => {
+            this.userService.AddUser(this.user).then(res => {
                 if (res.status >= 400) {
                     alert("Błąd " + res.status + ". Error: " + res.statusText);
                 } else {
                     this.editForm.reset();
-                    this.category_id = undefined;
+                    this.user_id = undefined;
                 }
             })
         }
     }
 
     onDelete() {
-        this.categoryService.DeleteCategory(this.category_id).then((res) => {
+        this.userService.DeleteUser(this.user_id).then((res) => {
             if(res.status == 200) {
                 if (confirm("Pomyślnie usunięto")) {
                     this.editForm.reset();
-                    this.category_id = undefined;
+                    this.user_id = undefined;
                 }
             }
         });
     }
 
     onChange() {
-        this.category_id = this.editForm.value["category"];
-        this.categoryService.GetCategoryById(this.category_id).then((res) => {
-            this.category = res;
+        this.user_id = this.editForm.value["user"];
+        this.userService.GetUserById(this.user_id).then((res) => {
+            this.user = res;
             this.editForm.setValue({
-                category: this.category_id,
-                name: res.name
+                user: this.user_id,
+                first_name: res.first_name,
+                last_name: res.last_name,
+                email: res.email
             });
         });
     }
-
 }

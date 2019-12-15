@@ -1,13 +1,13 @@
 <form (ngSubmit)="onSubmit(f)" #f="ngForm">
     <div *ngIf="mode.localeCompare('edit') == 0;" class="row">
-        <label class="col-sm-2 col-form-label">Autor</label>
+        <label class="col-sm-2 col-form-label">Użytkownik</label>
         <div class="col-sm-10">
-            <select name="author" (change)="onChange()" ngModel>
-                <option *ngFor="let author of authors" [value]="author.id">{{ author.GetFullName() }}</option>
+            <select name="user" (change)="onChange()" ngModel>
+                <option *ngFor="let user of users" [value]="user.id">{{ user.GetFullName() }}</option>
             </select>
         </div>
     </div>
-    <div *ngIf="mode.localeCompare('add') == 0 || author_id;">
+    <div *ngIf="mode.localeCompare('add') == 0 || user_id;">
         <div class="row">
             <label class="col-sm-2 col-form-label">Imię</label>
             <div class="col-sm-10">
@@ -21,9 +21,9 @@
             </div>
         </div>
         <div class="row">
-            <label class="col-sm-2 col-form-label">Pochodzenie</label>
+            <label class="col-sm-2 col-form-label">E-mail</label>
             <div class="col-sm-10">
-                <input type="text" name="origin" required ngModel>
+                <input type="text" name="email" required ngModel>
             </div>
         </div>
         <div class="text-right">

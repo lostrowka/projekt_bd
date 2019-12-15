@@ -54,6 +54,17 @@ export class AuthorService {
             ).toPromise();
     }
 
+    DeleteAuthor(id: number): Promise<HttpResponse<any>> {
+        let params = new HttpParams().set('id', id.toString());
+        return this.http.delete<HttpResponse<any>>(URL + '/deleteAuthor', {observe: 'response', params: params})
+            .pipe(
+                map(res => {
+                    return res;
+                }),
+                catchError(errorHandl)
+            ).toPromise();
+    }
+
     AuthorJSONtoObject(res) {
         let author = new Author();
         Object.assign(author, res);

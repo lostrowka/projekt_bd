@@ -10,7 +10,7 @@ import { Location } from "@angular/common";
     templateUrl: './editauthor.component.html',
     styles: []
 })
-export class EditAuthorComponent implements OnInit {
+export class EditAuthorComponent {
 
     @ViewChild('f', {static: false}) editForm: NgForm;
     mode: string;
@@ -31,10 +31,6 @@ export class EditAuthorComponent implements OnInit {
         } else {
             this.author = new Author();
         }
-    }
-
-    ngOnInit() {
-
     }
 
     onSubmit(form: NgForm) {
@@ -62,8 +58,15 @@ export class EditAuthorComponent implements OnInit {
         }
     }
 
-    onDelete(id: number) {
-
+    onDelete() {
+        this.authorService.DeleteAuthor(this.author_id).then((res) => {
+            if(res.status == 200) {
+                if (confirm("Pomyślnie usunięto")) {
+                    this.editForm.reset();
+                    this.author_id = undefined;
+                }
+            }
+        });
     }
 
     onChange() {

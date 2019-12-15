@@ -54,6 +54,17 @@ export class CategoryService {
             ).toPromise();
     }
 
+    DeleteCategory(id: number): Promise<HttpResponse<any>> {
+        let params = new HttpParams().set('id', id.toString());
+        return this.http.delete<HttpResponse<any>>(URL + '/deleteCategory', {observe: 'response', params: params})
+            .pipe(
+                map(res => {
+                    return res;
+                }),
+                catchError(errorHandl)
+            ).toPromise();
+    }
+
     CategoryJSONtoObject(res) {
         let category = new Category();
         Object.assign(category, res);

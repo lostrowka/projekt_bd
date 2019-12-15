@@ -18,7 +18,7 @@
             <div class="col-md-12 text-center">
                 <button class="btn btn-fill btn-secondary mx-2" type="button" (click)="location.back()">Wyjdź</button>
                 <button class="btn btn-fill btn-primary mx-2" type="submit">Zatwierdź</button>
-                <button *ngIf="mode.localeCompare('edit') == 0;" class="btn btn-fill btn-danger mx-2" type="button" (click)="onDelete(category_id)">Usuń</button>
+                <button *ngIf="mode.localeCompare('edit') == 0;" class="btn btn-fill btn-danger mx-2" type="button" (click)="onDelete()">Usuń</button>
             </div>
         </div>
     </div>

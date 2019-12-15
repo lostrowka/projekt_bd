@@ -1,20 +1,20 @@
 module.exports = function(app, pgClient){
 
-    app.get(['/getAllCategories'], (req, res) => {
-        pgClient.query('SELECT * FROM categories ORDER BY id ASC', (error, results) => {
+    app.get(['/getAllUsers'], (req, res) => {
+        pgClient.query('SELECT * FROM users ORDER BY id ASC', (error, results) => {
             if (error) {
-                res.status(500).json(error.detail)
+                res.status(500).json(error)
             } else {
                 res.status(200).json(results.rows)
             }
         })
     });
 
-    app.get(['/getCategoryById'], (req, res) => {
+    app.get(['/getUserById'], (req, res) => {
         let id = parseInt(req.param("id"));
 
         query = {
-            text: 'SELECT * FROM categories WHERE id = $1 ORDER BY id ASC',
+            text: 'SELECT * FROM users WHERE id = $1 ORDER BY id ASC',
             values: [id]
         };
 
@@ -27,25 +27,10 @@ module.exports = function(app, pgClient){
         })
     });
 
-    app.post(['/addCategory'], (req, res) => {
+    app.post(['/addUser'], (req, res) => {
         query = {
-            text: 'INSERT INTO categories (name) VALUES ($1)',
-            values: [req.body["name"]]
-        };
-
-        pgClient.query(query, (error, results) => {
-            if (error) {
-                res.status(503).json(error.detail)
-            } else {
-                res.status(200).json(results.rows[0])
-            }
-        })
-    });
-
-    app.post(['/updateCategory'], (req, res) => {
-        query = {
-            text: 'UPDATE categories SET name=$2 WHERE id=$1',
-            values: [parseInt(req.body["id"]), req.body["name"]]
+            text: 'INSERT INTO users (first_name, last_name, email) VALUES ($1, $2, $3)',
+            values: [req.body["first_name"], req.body["last_name"], req.body["email"]]
         };
 
         pgClient.query(query, (error, results) => {
@@ -57,9 +42,24 @@ module.exports = function(app, pgClient){
         })
     });
 
-    app.delete(['/deleteCategory'], (req, res) => {
+    app.post(['/updateUser'], (req, res) => {
         query = {
-            text: 'DELETE FROM categories WHERE id=$1',
+            text: 'UPDATE users SET first_name=$2, last_name=$3, email=$4 WHERE id=$1',
+            values: [parseInt(req.body["id"]), req.body["first_name"], req.body["last_name"], req.body["email"]]
+        };
+
+        pgClient.query(query, (error, results) => {
+            if (error) {
+                res.status(500).json(error.detail)
+            } else {
+                res.status(200).json(results.rows[0])
+            }
+        })
+    });
+
+    app.delete(['/deleteUser'], (req, res) => {
+        query = {
+            text: 'DELETE FROM users WHERE id=$1',
             values: [parseInt(req.query["id"])]
         };
 
