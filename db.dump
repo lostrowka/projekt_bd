@@ -1,0 +1,40 @@
+SET datestyle TO dmy;
+
+-- users
+
+CREATE TABLE users (id SERIAL PRIMARY KEY, first_name VARCHAR(20), last_name VARCHAR(30), email VARCHAR(30) UNIQUE);
+
+INSERT INTO users (first_name, last_name, email) VALUES 
+    ('Jan', 'Kowalski', 'kowalski@gmail.com'),
+    ('Anna', 'Nowak', 'nowak@gmail.com');
+
+-- authors
+
+CREATE TABLE authors (id SERIAL PRIMARY KEY, first_name VARCHAR(20), last_name VARCHAR(30), origin VARCHAR(30));
+
+INSERT INTO authors (first_name, last_name, origin) VALUES
+    ('Gynvael', 'Coldwind', 'Polska'),
+    ('Andrzej', 'Sapkowski', 'Polska');
+
+-- categories
+
+CREATE TABLE categories (id SERIAL PRIMARY KEY, name VARCHAR(30));
+
+INSERT INTO categories (name) VALUES ('Programowanie');
+
+-- books
+
+CREATE TABLE books (id SERIAL PRIMARY KEY, title VARCHAR(50) UNIQUE, author_id INT4, category_id INT4, isbn VARCHAR(17) UNIQUE);
+
+INSERT INTO books (title, author_id, category_id, isbn) VALUES
+    ('Zrozumieć programowanie', 1, 1, '978-83-01-18202-1'),
+    ('Praktyczna Inżynieria Wsteczna', 1, 1, '978-83-01-18951-8');
+
+-- rentals
+
+CREATE TABLE rentals (id SERIAL PRIMARY KEY, book_id INT4, user_id INT4, date_on DATE, date_to DATE);
+
+INSERT INTO rentals (book_id, user_id, date_on, date_to) VALUES 
+    (1, 2, '15.12.2019', '15.01.2020'),
+    (2, 1, '11.12.2019', '11.01.2020');
+
