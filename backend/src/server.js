@@ -5,7 +5,7 @@ const pg = require('pg');
 const app = express();
 const port = 3000;
 const pgClient = new pg.Client({
-    database: 'library',
+    database: 'DB_PROJ_MIELIMONKA_OSTROWKA',
     host: 'localhost',
     port: 5432,
     user: 'postgres',
